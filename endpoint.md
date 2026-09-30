@@ -2,9 +2,9 @@
 
 The app reads `endpoint.json`; this file is for people.
 
-- Updated: 1970-01-01T00:00:00.000Z
+- Updated: 2026-09-30T13:53:50.473Z
 - Host: bore.pub
-- Port: 0
+- Port: 29751
 - TLS: no
 - Certificate fingerprint: (none)
 
