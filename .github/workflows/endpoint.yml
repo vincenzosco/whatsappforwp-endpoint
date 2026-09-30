@@ -1,0 +1,57 @@
+name: endpoint
+
+on:
+  push:
+    paths:
+      - 'endpoint.json'
+  workflow_dispatch:
+    inputs:
+      host:
+        description: 'Public host (e.g. bore.pub)'
+        required: true
+      port:
+        description: 'Public port'
+        required: true
+      fingerprint:
+        description: 'TLS certificate SHA-256 (leave empty when TLS is off)'
+        required: false
+      tls:
+        description: 'Set when the tunnel terminates TLS'
+        type: boolean
+        default: false
+
+jobs:
+  validate:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: The endpoint file is valid
+        run: |
+          node -e "const e=require('./endpoint.json'); if(typeof e.host!=='string'||!e.host||!Number.isInteger(e.port)||e.port<1||e.port>65535) process.exit(1); console.log('endpoint', e.host+':'+e.port)"
+
+  publish:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publish
+        env:
+          HOST: ${{ inputs.host }}
+          PORT: ${{ inputs.port }}
+          FINGERPRINT: ${{ inputs.fingerprint }}
+          TLS: ${{ inputs.tls }}
+        run: |
+          args="--host $HOST --port $PORT"
+          if [ "$TLS" = "true" ]; then args="$args --tls"; fi
+          if [ -n "$FINGERPRINT" ]; then args="$args --fingerprint $FINGERPRINT"; fi
+          node publish.js $args
+      - name: Commit
+        run: |
+          git config user.name "endpoint-bot"
+          git config user.email "endpoint-bot@users.noreply.github.com"
+          git add endpoint.json endpoint.md
+          git commit -m "Publish the endpoint" || exit 0
+          git push
