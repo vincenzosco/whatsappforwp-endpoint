@@ -46,6 +46,15 @@ The GitHub Action can do it too: run the `endpoint` workflow with the host and
 port as inputs (Actions -> endpoint -> Run workflow). Use that when the tunnel
 lives on a machine you are not at.
 
+## When nothing should have to be published by hand
+
+The docker deployment does this part on its own. The tunnel container carries
+the GitHub CLI and, with a `GH_TOKEN` in its `.env`, writes `endpoint.json` and
+`endpoint.md` here whenever the public address changes - including when the
+port it asked for was taken and the server handed it another one. A token with
+write access to this repository is the only credential involved; see the
+`docker-whatsappforwp` README, "The tunnel to bore.pub".
+
 ## What this repository is not
 
 It is not the service. It only says where the service is right now.
