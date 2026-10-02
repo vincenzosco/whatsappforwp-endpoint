@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-09-30T17:20:11Z",
+  "updatedAt": "2026-10-02T04:46:24Z",
   "host": "bore.pub",
-  "port": 41417,
+  "port": 4140,
   "tls": false,
   "fingerprint": ""
 }
