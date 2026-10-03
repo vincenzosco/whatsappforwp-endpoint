@@ -2,7 +2,7 @@
 
 The app reads `endpoint.json`; this file is for people.
 
-- Updated: 2026-10-02T08:48:34Z
+- Updated: 2026-10-03T05:08:41Z
 - Host: bore.pub
 - Port: 41417
 - TLS: no
